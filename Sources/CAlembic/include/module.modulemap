@@ -1,0 +1,5 @@
+module CAlembic {
+    requires cplusplus
+    header "calembic.h"
+    export *
+}
