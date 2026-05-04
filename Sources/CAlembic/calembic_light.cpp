@@ -10,7 +10,11 @@ std::shared_ptr<CAlembicOLight> calembic_create_light(std::shared_ptr<CAlembicOO
 }
 
 int calembic_light_set(const std::shared_ptr<CAlembicOLight>& light, const CAlembicLightSample&) {
-    try { set_error(CAlembicError_OK, ""); return 0; }
+    try {
+        CameraSample s;
+        light->light.getSchema().setCameraSample(s);
+        set_error(CAlembicError_OK, ""); return 0;
+    }
     catch (const std::exception& e) { set_error(CAlembicError_InvalidSample, std::string("light_set: ") + e.what()); return -1; }
 }
 

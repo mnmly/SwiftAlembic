@@ -14,27 +14,30 @@ std::shared_ptr<CAlembicOPolyMesh> calembic_create_polymesh(std::shared_ptr<CAle
 int calembic_polymesh_set(const std::shared_ptr<CAlembicOPolyMesh>& mesh, const CAlembicPolyMeshSample& sample) {
     try {
         OPolyMeshSchema::Sample s;
+        // Declare all temp vectors at outer scope so their data stays valid until schema.set(s).
+        std::vector<Imath::V3f> pos, normals, velocities;
+        std::vector<Imath::V2f> uvs;
         if (!sample.positions.empty()) {
-            std::vector<Imath::V3f> pos; pos.reserve(sample.positions.size());
+            pos.reserve(sample.positions.size());
             for (auto& p : sample.positions) pos.push_back(toV3f(p));
             s.setPositions(V3fArraySample(pos.data(), pos.size()));
         }
         if (!sample.faceIndices.empty()) s.setFaceIndices(Int32ArraySample(sample.faceIndices.data(), sample.faceIndices.size()));
         if (!sample.faceCounts.empty()) s.setFaceCounts(Int32ArraySample(sample.faceCounts.data(), sample.faceCounts.size()));
         if (sample.hasNormals && !sample.normals.empty()) {
-            std::vector<Imath::V3f> n; n.reserve(sample.normals.size());
-            for (auto& v : sample.normals) n.push_back(Imath::V3f(v.x, v.y, v.z));
-            s.setNormals(ON3fGeomParam::Sample(N3fArraySample(n.data(), n.size()), kVertexScope));
+            normals.reserve(sample.normals.size());
+            for (auto& v : sample.normals) normals.push_back(Imath::V3f(v.x, v.y, v.z));
+            s.setNormals(ON3fGeomParam::Sample(N3fArraySample(normals.data(), normals.size()), kVertexScope));
         }
         if (sample.hasUVs && !sample.uvs.empty()) {
-            std::vector<Imath::V2f> u; u.reserve(sample.uvs.size());
-            for (auto& v : sample.uvs) u.push_back(toV2f(v));
-            s.setUVs(OV2fGeomParam::Sample(V2fArraySample(u.data(), u.size()), kFacevaryingScope));
+            uvs.reserve(sample.uvs.size());
+            for (auto& v : sample.uvs) uvs.push_back(toV2f(v));
+            s.setUVs(OV2fGeomParam::Sample(V2fArraySample(uvs.data(), uvs.size()), kFacevaryingScope));
         }
         if (sample.hasVelocities && !sample.velocities.empty()) {
-            std::vector<Imath::V3f> vel; vel.reserve(sample.velocities.size());
-            for (auto& v : sample.velocities) vel.push_back(toV3f(v));
-            s.setVelocities(V3fArraySample(vel.data(), vel.size()));
+            velocities.reserve(sample.velocities.size());
+            for (auto& v : sample.velocities) velocities.push_back(toV3f(v));
+            s.setVelocities(V3fArraySample(velocities.data(), velocities.size()));
         }
         if (sample.selfBoundsSet) s.setSelfBounds(toBox3d(sample.selfBounds));
         mesh->mesh.getSchema().set(s);

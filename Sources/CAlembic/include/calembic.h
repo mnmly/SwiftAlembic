@@ -48,6 +48,9 @@ std::shared_ptr<CAlembicOObject> calembic_create_child(std::shared_ptr<CAlembicO
 
 std::string calembic_object_name(const std::shared_ptr<CAlembicIObject>& obj);
 std::string calembic_object_full_name(const std::shared_ptr<CAlembicIObject>& obj);
+uint32_t calembic_object_num_children(const std::shared_ptr<CAlembicIObject>& obj);
+std::shared_ptr<CAlembicIObject> calembic_object_child_at(
+    const std::shared_ptr<CAlembicIObject>& obj, uint32_t index);
 std::vector<std::shared_ptr<CAlembicIObject>> calembic_object_children(
     const std::shared_ptr<CAlembicIObject>& obj);
 

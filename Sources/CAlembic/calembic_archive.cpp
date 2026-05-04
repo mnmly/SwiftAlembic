@@ -83,6 +83,21 @@ std::string calembic_object_full_name(const std::shared_ptr<CAlembicIObject>& ob
     }
 }
 
+uint32_t calembic_object_num_children(const std::shared_ptr<CAlembicIObject>& obj) {
+    try { return static_cast<uint32_t>(obj->object.getNumChildren()); } catch (...) { return 0; }
+}
+
+std::shared_ptr<CAlembicIObject> calembic_object_child_at(
+    const std::shared_ptr<CAlembicIObject>& obj, uint32_t index) {
+    try {
+        set_error(CAlembicError_OK, "");
+        return std::make_shared<CAlembicIObject>(obj->object.getChild(index));
+    } catch (const std::exception& e) {
+        set_error(CAlembicError_InvalidSchema, std::string("child_at: ") + e.what());
+        return nullptr;
+    }
+}
+
 std::vector<std::shared_ptr<CAlembicIObject>> calembic_object_children(
     const std::shared_ptr<CAlembicIObject>& obj) {
     try {

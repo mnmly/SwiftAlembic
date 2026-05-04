@@ -24,7 +24,8 @@ int calembic_points_set(const std::shared_ptr<CAlembicOPoints>& points, const CA
             s.setIds(UInt64ArraySample(ids.data(), ids.size()));
         }
         if (sample.hasWidths && !sample.widths.empty()) s.setWidths(OFloatGeomParam::Sample(FloatArraySample(sample.widths.data(), sample.widths.size()), kVertexScope));
-        if (sample.hasVelocities && !sample.velocities.empty()) { std::vector<Imath::V3f> vel; for (auto& v : sample.velocities) vel.push_back(Imath::V3f(v.x,v.y,v.z)); s.setVelocities(V3fArraySample(vel.data(), vel.size())); }
+        std::vector<Imath::V3f> vel;
+        if (sample.hasVelocities && !sample.velocities.empty()) { vel.reserve(sample.velocities.size()); for (auto& v : sample.velocities) vel.push_back(Imath::V3f(v.x,v.y,v.z)); s.setVelocities(V3fArraySample(vel.data(), vel.size())); }
         if (sample.selfBoundsSet) s.setSelfBounds(toBox3d(sample.selfBounds));
         points->points.getSchema().set(s);
         set_error(CAlembicError_OK, ""); return 0;

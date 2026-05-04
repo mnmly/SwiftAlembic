@@ -2,7 +2,8 @@
 
 using namespace Alembic::Abc;
 
-// === Error state ===
+// Per-thread error state — eliminates the global mutex and the race window
+// between a C++ wrapper setting the error and the Swift caller reading it.
 
 namespace {
 
@@ -11,23 +12,19 @@ struct ErrorState {
     std::string message;
 };
 
-std::mutex g_error_mutex;
-ErrorState g_error_state;
+thread_local ErrorState tl_error;
 
 } // namespace
 
 void set_error(CAlembicError code, const std::string& msg) {
-    std::lock_guard<std::mutex> lock(g_error_mutex);
-    g_error_state.code = code;
-    g_error_state.message = msg;
+    tl_error.code = code;
+    tl_error.message = msg;
 }
 
 const char* calembic_last_error() {
-    std::lock_guard<std::mutex> lock(g_error_mutex);
-    return g_error_state.message.c_str();
+    return tl_error.message.c_str();
 }
 
 CAlembicError calembic_last_error_code() {
-    std::lock_guard<std::mutex> lock(g_error_mutex);
-    return g_error_state.code;
+    return tl_error.code;
 }

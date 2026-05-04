@@ -17,12 +17,15 @@ std::shared_ptr<CAlembicOCurves> calembic_create_curves(std::shared_ptr<CAlembic
 int calembic_curves_set(const std::shared_ptr<CAlembicOCurves>& curves, const CAlembicCurvesSample& sample) {
     try {
         OCurvesSchema::Sample s; s.setType(toCT(sample.curveType)); s.setBasis(toBT(sample.basis)); s.setWrap(sample.wrap ? kPeriodic : kNonPeriodic);
-        std::vector<Imath::V3f> pos; pos.reserve(sample.positions.size()); for (auto& p : sample.positions) pos.push_back(Imath::V3f(p.x,p.y,p.z));
+        // Declare all temp vectors at outer scope so their data stays valid until schema.set(s).
+        std::vector<Imath::V3f> pos, normals;
+        std::vector<Imath::V2f> uvs;
+        pos.reserve(sample.positions.size()); for (auto& p : sample.positions) pos.push_back(Imath::V3f(p.x,p.y,p.z));
         s.setPositions(V3fArraySample(pos.data(), pos.size()));
         s.setCurvesNumVertices(Int32ArraySample(sample.vertsPerCurve.data(), sample.vertsPerCurve.size()));
         if (sample.hasWidths && !sample.widths.empty()) s.setWidths(OFloatGeomParam::Sample(FloatArraySample(sample.widths.data(), sample.widths.size()), kVertexScope));
-        if (sample.hasNormals && !sample.normals.empty()) { std::vector<Imath::V3f> n; for (auto& v : sample.normals) n.push_back(Imath::V3f(v.x,v.y,v.z)); s.setNormals(ON3fGeomParam::Sample(N3fArraySample(n.data(), n.size()), kVertexScope)); }
-        if (sample.hasUVs && !sample.uvs.empty()) { std::vector<Imath::V2f> u; for (auto& v : sample.uvs) u.push_back(toV2f(v)); s.setUVs(OV2fGeomParam::Sample(V2fArraySample(u.data(), u.size()), kVertexScope)); }
+        if (sample.hasNormals && !sample.normals.empty()) { normals.reserve(sample.normals.size()); for (auto& v : sample.normals) normals.push_back(Imath::V3f(v.x,v.y,v.z)); s.setNormals(ON3fGeomParam::Sample(N3fArraySample(normals.data(), normals.size()), kVertexScope)); }
+        if (sample.hasUVs && !sample.uvs.empty()) { uvs.reserve(sample.uvs.size()); for (auto& v : sample.uvs) uvs.push_back(toV2f(v)); s.setUVs(OV2fGeomParam::Sample(V2fArraySample(uvs.data(), uvs.size()), kVertexScope)); }
         if (sample.selfBoundsSet) s.setSelfBounds(toBox3d(sample.selfBounds));
         curves->curves.getSchema().set(s);
         set_error(CAlembicError_OK, ""); return 0;

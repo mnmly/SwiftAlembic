@@ -20,7 +20,6 @@ int calembic_camera_set(const std::shared_ptr<CAlembicOCamera>& camera, const CA
         s.setOverScanLeft(sample.overScanLeft); s.setOverScanRight(sample.overScanRight);
         s.setShutterOpen(sample.shutterOpen); s.setShutterClose(sample.shutterClose);
         if (sample.hasChildBounds) s.setChildBounds(toBox3d(sample.childBounds));
-        if (sample.selfBoundsSet) s.setChildBounds(toBox3d(sample.selfBounds));
         camera->camera.getSchema().set(s);
         set_error(CAlembicError_OK, ""); return 0;
     } catch (const std::exception& e) { set_error(CAlembicError_InvalidSample, std::string("camera_set: ") + e.what()); return -1; }
