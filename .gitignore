@@ -1,2 +1,30 @@
-.build
+# Swift / SPM
+.build/
+*.o
+*.d
+
+# Xcode
+*.xcodeproj/
+*.xcworkspace/
+xcuserdata/
+DerivedData/
+*.moved-aside
+*.pbxuser
+*.perspectivev3
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Generated / temporary
+*.abc
+/tmp/
+
+# Bundled framework (large binary; checked in separately or via LFS)
 Frameworks/*
+
+# Tasks / scratch
+tasks/
+References
+.vscode
