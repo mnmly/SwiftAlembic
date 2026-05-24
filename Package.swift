@@ -5,10 +5,10 @@ import PackageDescription
 let package = Package(
     name: "SwiftAlembic",
     platforms: [
-        .macOS(.v26),
-        .iOS(.v17),
-        .visionOS(.v2),
-        .tvOS(.v17)
+        .macOS(.v15),
+        .iOS(.v15),
+        .visionOS(.v1),
+        .tvOS(.v15)
     ],
     products: [
         .library(name: "SwiftAlembic", targets: ["SwiftAlembic"]),
@@ -20,8 +20,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "Alembic",
-            url: "https://github.com/mnmly/alembic-xcframework-builder/releases/download/1.8.11-multiplatform/Alembic.xcframework.zip",
-            checksum: "73f73447a3e0103bb16f9b7f7c3549f40579b822620764fe3f3802a8e9df0f87"
+            url: "https://github.com/mnmly/alembic-xcframework-builder/releases/download/1.8.11-multiplatform-min15/Alembic.xcframework.zip",
+            checksum: "0f4c0f2a2665a9912bf0ec8f84c32f7a685308c37074da246d43d33850aae50e"
         ),
         .target(
             name: "CAlembic",

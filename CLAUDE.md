@@ -33,7 +33,7 @@ document parameter" warnings attributable to your changes.
 
 ## Platforms
 
-SwiftAlembic targets **macOS 26+, iOS 17+, visionOS 2+, tvOS 17+**
+SwiftAlembic targets **macOS 15+, iOS 15+, visionOS 1+, tvOS 15+**
 (all arm64). The bundled `Alembic.xcframework` ships device + simulator
 slices for every platform. When adding new public surface, make sure it
 compiles for every slice — the `Examples/AlembicApp` xcodeproj is the
