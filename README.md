@@ -4,6 +4,8 @@ A Swift wrapper for the [Alembic](https://www.alembic.io) 3D interchange library
 Write and read animated geometry — point clouds, meshes, curves, cameras, xforms, and more —
 using a modern Swift API with SIMD types, Swift 6 concurrency, and `AsyncSequence` iteration.
 
+📚 **API reference**: https://mnmly.github.io/SwiftAlembic/
+
 ## Requirements
 
 | | |
