@@ -7,6 +7,11 @@
 *.xcodeproj/
 *.xcworkspace/
 xcuserdata/
+# Keep the example app's project structure tracked, but not personal IDE state.
+!Examples/AlembicApp/AlembicApp.xcodeproj/
+!Examples/AlembicApp/AlembicApp.xcodeproj/project.pbxproj
+!Examples/AlembicApp/AlembicApp.xcodeproj/project.xcworkspace/
+!Examples/AlembicApp/AlembicApp.xcodeproj/project.xcworkspace/contents.xcworkspacedata
 DerivedData/
 *.moved-aside
 *.pbxuser

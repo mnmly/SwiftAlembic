@@ -4,7 +4,12 @@ import PackageDescription
 
 let package = Package(
     name: "SwiftAlembic",
-    platforms: [.macOS(.v13)],
+    platforms: [
+        .macOS(.v26),
+        .iOS(.v17),
+        .visionOS(.v2),
+        .tvOS(.v17)
+    ],
     products: [
         .library(name: "SwiftAlembic", targets: ["SwiftAlembic"]),
         .executable(name: "Examples", targets: ["Examples"])
@@ -12,8 +17,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "Alembic",
-            url: "https://github.com/mnmly/alembic-xcframework-builder/releases/download/1.81.11-fix/Alembic.xcframework.zip",
-            checksum: "4a10cf92c8c4a542644c6317d9487736c277b20bd19bf43ff780318bfa7fd46b"
+            url: "https://github.com/mnmly/alembic-xcframework-builder/releases/download/1.8.11-multiplatform/Alembic.xcframework.zip",
+            checksum: "73f73447a3e0103bb16f9b7f7c3549f40579b822620764fe3f3802a8e9df0f87"
         ),
         .target(
             name: "CAlembic",
@@ -34,6 +39,7 @@ let package = Package(
             name: "Examples",
             dependencies: ["SwiftAlembic"],
             path: "Examples",
+            exclude: ["AlembicApp"],
             swiftSettings: [
                 .interoperabilityMode(.Cxx)
             ]

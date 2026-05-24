@@ -8,11 +8,11 @@ using a modern Swift API with SIMD types, Swift 6 concurrency, and `AsyncSequenc
 
 | | |
 |---|---|
-| Platform | macOS 13+ (arm64) |
+| Platforms | macOS 26+, iOS 17+, visionOS 2+, tvOS 17+ (arm64) |
 | Swift | 6.2+ |
-| Xcode | 16+ |
+| Xcode | 26+ |
 
-The bundled `Alembic.xcframework` is **arm64/macOS only**. Multi-platform support is not currently in scope.
+The bundled `Alembic.xcframework` ships arm64 slices for macOS, iOS (device + simulator), visionOS (device + simulator), and tvOS (device + simulator). macOS uses a dynamic framework; the other platforms use static frameworks with Imath linked in.
 
 ## Installation
 
